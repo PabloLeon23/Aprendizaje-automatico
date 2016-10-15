@@ -1,10 +1,9 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*
+# -*- coding: utf-8 -*-
 
 import csv
 import codecs
 
-xml = codecs.open('IncidenciasTDTHist.xml', 'r') #encoding='ISO-8859-1'
+xml = codecs.open('IncidenciasTDTHist.xml', 'r', encoding='utf-8', errors='ignore')
 X = xml.read().split('<incidenciaGeolocalizada>')[1:]
 
 with open('IncidenciasTDTGeo.csv', 'w') as csvfile:
@@ -31,4 +30,4 @@ with open('IncidenciasTDTGeo.csv', 'w') as csvfile:
                     data[campo[:-1]] = ''
             writer.writerow(data)
             incidences += 1
-    print 'Incidencias: ' + str(incidences)
+    print('Incidencias: ' + str(incidences))
