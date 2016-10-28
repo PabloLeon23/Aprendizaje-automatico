@@ -16,24 +16,30 @@ cs = csv.reader(f)
 
 data = []
 rares = []
+rows = []
+
+lon_index = 13
+lat_index = 14
+date_index = 6
 
 for row in cs:
     if row[0] == 'Accidente':
-        lon = float(row[13])
-        lat = float(row[14])
-        date = np.datetime64(row[6])
+        lon = float(row[lon_index])
+        lat = float(row[lat_index])
+        date = np.datetime64(row[date_index])
         # Delete the outliers
         if lon > -2.25:
             rares.append(row)
         else:
             data.append([lon, lat, date])
+            rows.append(row)
 
 print 'Accidente:', len(data)
 print 'Raros:', len(rares)
 
 
 # 2. Delete repited elements
-new_data = []
+new_rows = []
 i = 0
 while i < len(data):
     actual = data[i]
@@ -43,11 +49,14 @@ while i < len(data):
         if i == len(data) or not equals(actual, data[i]):
             repes = False
             i -= 1
-    new_data.append(actual[:-1])
+    new_row = rows[i][4:6] + rows[i][6].split() + rows[i][7:12] + rows[i][13:]
+    new_rows.append(new_row)
     i += 1
 
 
 #3. Write new data in a csv file
+headers = ['causa', 'poblacion','fecha', 'hora', 'nivel', 'carretera', 'pk_inicial', 'pk_final', 'sentido', 'longitud', 'latitud']
 with open('Accidents.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
-    writer.writerows(new_data)
+    writer.writerow(headers)
+    writer.writerows(new_rows)
