@@ -3,10 +3,10 @@
 import csv
 import codecs
 
-xml = codecs.open('IncidenciasTDTHist.xml', 'r', encoding='utf-8', errors='ignore')
+xml = codecs.open('../Data/IncidenciasTDTHist.xml', 'r', encoding='utf-8', errors='ignore')
 X = xml.read().split('<incidenciaGeolocalizada>')[1:]
 
-with open('IncidenciasTDTGeo.csv', 'w') as csvfile:
+with open('../Data/IncidenciasTDTGeo.csv', 'w') as csvfile:
     fieldnames = ['tipo', 'autonomia', 'provincia', 'matricula', 'causa', 'poblacion',\
                 'fechahora_ini', 'nivel', 'carretera', 'pk_inicial', 'pk_final',\
                 'sentido', 'nombre', 'longitud', 'latitud']

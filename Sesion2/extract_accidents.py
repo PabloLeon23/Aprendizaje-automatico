@@ -11,7 +11,7 @@ def equals(X, Y):
 
 
 # 1. Read the data from csv file
-f = open('IncidenciasTDTGeo.csv', 'r')
+f = open('../Data/IncidenciasTDTGeo.csv', 'r')
 cs = csv.reader(f)
 
 data = []
@@ -56,7 +56,7 @@ while i < len(data):
 
 #3. Write new data in a csv file
 headers = ['causa', 'poblacion','fecha', 'hora', 'nivel', 'carretera', 'pk_inicial', 'pk_final', 'sentido', 'longitud', 'latitud']
-with open('Accidents.csv', 'w') as csvfile:
+with open('../Data/Accidents.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
     writer.writerow(headers)
     writer.writerows(new_rows)
