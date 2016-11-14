@@ -1,4 +1,11 @@
-# -*- coding: utf-8 -*-
+
+# coding: utf-8
+
+# <p style="font-family:courier;">1. We filter the incidences of XML occurring in Bizkaia and store them in a CSV called IncidenciasTDTGeo </p>
+
+# In[4]:
+
+
 
 import csv
 import codecs
@@ -7,9 +14,7 @@ xml = codecs.open('../Data/IncidenciasTDTHist.xml', 'r', encoding='utf-8', error
 X = xml.read().split('<incidenciaGeolocalizada>')[1:]
 
 with open('../Data/IncidenciasTDTGeo.csv', 'w') as csvfile:
-    fieldnames = ['tipo', 'autonomia', 'provincia', 'matricula', 'causa', 'poblacion',\
-                'fechahora_ini', 'nivel', 'carretera', 'pk_inicial', 'pk_final',\
-                'sentido', 'nombre', 'longitud', 'latitud']
+    fieldnames = ['tipo', 'autonomia', 'provincia', 'matricula', 'causa', 'poblacion',                'fechahora_ini', 'nivel', 'carretera', 'pk_inicial', 'pk_final',                'sentido', 'nombre', 'longitud', 'latitud']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
     incidences = 0
@@ -31,3 +36,10 @@ with open('../Data/IncidenciasTDTGeo.csv', 'w') as csvfile:
             writer.writerow(data)
             incidences += 1
     print('Incidencias: ' + str(incidences))
+    
+
+
+# In[ ]:
+
+
+

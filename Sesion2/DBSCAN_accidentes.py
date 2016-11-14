@@ -1,7 +1,9 @@
 
 # coding: utf-8
 
-# In[2]:
+# <p style="font-family:courier;">1. We read the file Accidents and keep the latitude and longitude of them </p>
+
+# In[1]:
 
 import csv
 import matplotlib.pyplot as plt
@@ -23,9 +25,10 @@ for row in cs:
 X = np.asarray(data)
 
 
-# In[3]:
+# <p style="font-family:courier;">2. Plot accidents</p>
 
-# Plot accidents
+# In[2]:
+
 fig, ax = plt.subplots()
 plt.scatter(X[:,0], X[:,1], c='r', marker='o')
 ax.grid(True)
@@ -33,9 +36,10 @@ plt.title('Accidentes en Bizkaia')
 plt.show()
 
 
-# In[4]:
+# <p style="font-family:courier;">3. Compute k-nearest neighboors</p>
 
-# Compute k-nearest neighboors
+# In[3]:
+
 from sklearn.neighbors import DistanceMetric, kneighbors_graph
 dist = DistanceMetric.get_metric('euclidean')
 matdist = dist.pairwise(X)
@@ -55,7 +59,9 @@ plt.plot(seq)
 plt.show()
 
 
-# In[5]:
+# <p style="font-family:courier;">4. We get the number of clusters with DBSCAN</p>
+
+# In[4]:
 
 from sklearn.cluster import DBSCAN
 
@@ -66,14 +72,18 @@ n_clusters = len(unique_labels) - (1 if -1 in unique_labels else 0)
 print 'Número de clusters: ', n_clusters
 
 
-# In[ ]:
+# <p style="font-family:courier;">5. We show the silhoutte coefficient</p>
+
+# In[5]:
 
 # Validation/Evaluation
 from sklearn import metrics
 print "Silhoutte Coefficient: %0.3f" % metrics.silhouette_score(X, db.labels_)
 
 
-# In[21]:
+# <p style="font-family:courier;">6. Plot the clusters</p>
+
+# In[6]:
 
 colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
 for k, col in zip(unique_labels, colors):
@@ -85,9 +95,10 @@ plt.title('Estimated number of clusters: %d' % n_clusters)
 plt.show()
 
 
-# In[6]:
+# <p style="font-family:courier;">7. We write new data in a csv file called Accidents_zones_dbscan</p>
 
-#3. Write new data in a csv file
+# In[7]:
+
 headers = ['causa', 'poblacion','fecha', 'hora', 'nivel', 'carretera', 
            'pk_inicial', 'pk_final', 'sentido', 'longitud', 'latitud',
           'zona']
@@ -96,4 +107,9 @@ with open('../Data/Accidents_zones_dbscan.csv', 'w') as csvfile:
     writer.writerow(headers)
     for i in range(db.labels_.size):
         writer.writerow(rows[i]+[db.labels_[i]])
+
+
+# In[ ]:
+
+
 

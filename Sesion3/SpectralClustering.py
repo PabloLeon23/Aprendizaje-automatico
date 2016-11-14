@@ -11,6 +11,8 @@ from sklearn.cluster import SpectralClustering
 from sklearn.cluster import KMeans
 
 
+# <p style="font-family:courier;">1. We read the Accidents file and keep the latitude and longitude</p>
+
 # In[2]:
 
 f = open('../Data/Accidents.csv', 'r')
@@ -29,9 +31,10 @@ for row in cs:
 X = np.asarray(data)
 
 
-# In[ ]:
+# <p style="font-family:courier;">2. We calculate the best K in k-means in a range between 50 and 70, and plot distortions and silhouette</p>
 
-# calculate better k
+# In[7]:
+
 init = 'k-means++' 
 iterations = 10 
 max_iter = 300 
@@ -46,22 +49,23 @@ for i in range(50, 70):
     distortions.append(km.inertia_)
     silhouettes.append(metrics.silhouette_score(X, labels))
     
-# Plot distortions    
+    
 plt.plot(range(50,70), distortions, marker='o')
 plt.xlabel('Number of clusters')
 plt.ylabel('Distortion')
 plt.show()
 
-# Plot Silhouette
+
 plt.plot(range(50,70), silhouettes , marker='o')
 plt.xlabel('Number of clusters')
 plt.ylabel('Silohouette')
 plt.show()
 
 
+# <p style="font-family:courier;">3. We plot accidents using k-means with k=66</p>
+
 # In[3]:
 
-# k-means
 k = 66
 init = 'k-means++' 
 iterations = 10 
@@ -74,9 +78,10 @@ plt.scatter(X[:,0], X[:,1], c=labels)
 plt.show()
 
 
-# In[5]:
+# <p style="font-family:courier;">4. We write new data with zones in a csv file called Accidents_zones_kmeans</p>
 
-#Write new data in a csv file
+# In[4]:
+
 headers = ['causa', 'poblacion','fecha', 'hora', 'nivel', 'carretera', 
            'pk_inicial', 'pk_final', 'sentido', 'longitud', 'latitud',
           'zona']
@@ -87,9 +92,10 @@ with open('../Data/Accidents_zones_kmeans.csv', 'w') as csvfile:
         writer.writerow(rows[i]+[labels[i]])
 
 
-# In[4]:
+# <p style="font-family:courier;">5. We apply spectral clustering with 66 clusters</p>
 
-# Spectral Clustering
+# In[5]:
+
 """
 spectral = SpectralClustering(n_clusters = 66, eigen_solver = 'arpack', 
                               affinity='nearest_neighbors', n_neighbors = 10, 
@@ -101,7 +107,9 @@ labels = spectral.fit_predict(X)
 unique_labels = set(labels)
 
 
-# In[5]:
+# <p style="font-family:courier;">6. We plot the results of spectral clustering</p>
+
+# In[6]:
 
 #Plot
 colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
@@ -112,4 +120,9 @@ for k, col in zip(unique_labels, colors):
         plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col, markersize=6)
 plt.title('Estimated number of clusters: %d' % k)
 plt.show()
+
+
+# In[ ]:
+
+
 

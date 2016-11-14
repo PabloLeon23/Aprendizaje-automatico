@@ -1,12 +1,12 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 import csv
 
 
-# In[4]:
+# In[2]:
 
 causa_i = 0
 poblacion_i = 1
@@ -21,16 +21,15 @@ zona_i = 11
 zonas = dict()
 
 
-# In[7]:
+# In[3]:
 
-# Accidents_zones_dbscan.csv, Accidentes_zones_kmeans.csv
 file_name_in = '../Data/Accidents_with_zones_dbscan.csv'
 
 
-# In[8]:
+# <p style="font-family:courier;">1. We read the file Accidents_with_zones_dbscan that we have saved in file_name_in and created "Zonas". Zonas is a dictionary where the key is the zone and the content is a list of lists of accidents with their characteristics </p>
 
-#zonas es un diccionario donde la clave es la zona y el contenido una 
-#lista de listas de accidentes con sus caracteristicas
+# In[4]:
+
 f = open(file_name_in, 'r')
 accidentes = csv.reader(f)
 accidentes.next()
@@ -44,29 +43,30 @@ for accidente in accidentes:
             zonas[zona].append(accidente)
 
 
-# In[9]:
+# <p style="font-family:courier;">2. We identify the number of accidents based on a series of defined characteristics. The characteristics are tipe of accident, season of the year, hour and amount of traffic</p>
+
+# In[5]:
 
 n_accidentes = []
 
-#distincion por tipo de accidente
 n_accidentes_por_alcance = [0] * len(zonas)
 n_accidentes_por_atropello = [0] * len(zonas)
 n_accidentes_por_salida = [0] * len(zonas)
 n_accidentes_por_tijera_camion = [0] * len(zonas)
 n_accidentes_por_vuelco = [0] * len(zonas)
 
-#distincion por meses
+
 dici_enero_feb = [0] * len(zonas)
 marzo_abril_may = [0] * len(zonas)
 jun_jul_agos = [0] * len(zonas)
 sep_oct_nov = [0] * len(zonas)
 
-#distincion por hora del dia
+
 manana=[0] * len(zonas)
 tarde=[0] * len(zonas)
 
 
-#distincion por cantidad de trafico
+
 trafico_fluido=[0] * len(zonas)
 trafico_lento=[0] * len(zonas)
 trafico_muy_lento=[0] * len(zonas)
@@ -107,9 +107,10 @@ for zona in zonas:
             tarde[zona] +=1
 
 
-# In[10]:
+# <p style="font-family:courier;">3. We add the list of new features to the zip and the header</p>
 
-#Añadir las listas de nuevas características al final del zip y a la cabecera
+# In[6]:
+
 rows = zip(zonas.keys(), n_accidentes, n_accidentes_por_alcance, n_accidentes_por_atropello,
           n_accidentes_por_salida, n_accidentes_por_tijera_camion, 
            n_accidentes_por_vuelco, dici_enero_feb, marzo_abril_may, 
@@ -123,11 +124,11 @@ headers = ['zona', 'accidentes', 'accidentes_alcance', 'accidentes_atropello',
           'trafico_parado','mañana(00:00-11:59)', 'tarde(12:00-23:59)']
 
 
-# In[11]:
+# <p style="font-family:courier;">4. We write de zones features in a new csv file called Zonas_dbscan</p>
 
-# Write de zones feautes in a new csvfile
-#Zonas_dbscan.csv, Zonas_kmeans.csv
-file_name_out = 'Zonas_dbscan.csv'
+# In[7]:
+
+file_name_out = '../Data/Zonas_dbscan.csv'
 
 with open(file_name_out, 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
