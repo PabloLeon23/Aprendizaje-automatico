@@ -195,3 +195,23 @@ with open(file_name_out, 'w') as csvfile:
         zone_feature.insert(0, zonas_labels[i])
     writer.writerows(features)
 
+
+# In[14]:
+
+file_name_out_2 = '../Data/Zonas_labels.csv'
+
+headers = ['zona', 'accidentes', 'accidentes_alcance', 'accidentes_atropello',
+          'accidentes_salida', 'accidentes_tijera_camion', 'accidentes_vuelco', 
+            'accidentes_invierno', 'accidentes_primavera', 'accidentes_verano', 
+           'accidentes_otoño', 'trafico_fluido', 'trafico_lento', 'trafico_muy_lento', 
+          'trafico_parado','mañana(00:00-11:59)', 'tarde(12:00-23:59)', 'grupo']
+
+for i in range(len(zonas)):
+    zonas[i].append(labels[i])
+zonas.append(zona_peligrosa + [6])
+
+with open(file_name_out_2, 'w') as csvfile:
+    writer = csv.writer(csvfile, delimiter = ',')
+    writer.writerow(headers)
+    writer.writerows(zonas)
+
