@@ -1,9 +1,9 @@
 
 # coding: utf-8
 
-# <p style="font-family:courier;">1. We filter the incidences of XML occurring in Bizkaia and store them in a CSV called IncidenciasTDTGeo </p>
+# <p style="font-family:courier;">1. We filter the incidences of XML occurring in Bizkaia and store them in a CSV called IncidenciasTDTGeo. </p>
 
-# In[4]:
+# In[1]:
 
 
 

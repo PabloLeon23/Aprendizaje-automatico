@@ -1,0 +1,3 @@
+The dataset is vote.arff
+
+We choose J-48 because classify correctly 96,3218 %  of the instances.

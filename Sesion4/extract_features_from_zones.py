@@ -1,12 +1,12 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[8]:
 
 import csv
 
 
-# In[2]:
+# In[9]:
 
 causa_i = 0
 poblacion_i = 1
@@ -21,14 +21,14 @@ zona_i = 11
 zonas = dict()
 
 
-# In[3]:
+# In[10]:
 
-file_name_in = '../Data/Accidents_with_zones_dbscan.csv'
+file_name_in = '../Data/Accidents_zones_dbscan.csv'
 
 
 # <p style="font-family:courier;">1. We read the file Accidents_with_zones_dbscan that we have saved in file_name_in and created "Zonas". Zonas is a dictionary where the key is the zone and the content is a list of lists of accidents with their characteristics </p>
 
-# In[4]:
+# In[11]:
 
 f = open(file_name_in, 'r')
 accidentes = csv.reader(f)
@@ -45,7 +45,7 @@ for accidente in accidentes:
 
 # <p style="font-family:courier;">2. We identify the number of accidents based on a series of defined characteristics. The characteristics are tipe of accident, season of the year, hour and amount of traffic</p>
 
-# In[5]:
+# In[12]:
 
 n_accidentes = []
 
@@ -109,7 +109,7 @@ for zona in zonas:
 
 # <p style="font-family:courier;">3. We add the list of new features to the zip and the header</p>
 
-# In[6]:
+# In[13]:
 
 rows = zip(zonas.keys(), n_accidentes, n_accidentes_por_alcance, n_accidentes_por_atropello,
           n_accidentes_por_salida, n_accidentes_por_tijera_camion, 
@@ -117,18 +117,18 @@ rows = zip(zonas.keys(), n_accidentes, n_accidentes_por_alcance, n_accidentes_po
            jun_jul_agos, sep_oct_nov, trafico_fluido, trafico_lento, 
            trafico_muy_lento, trafico_parado, manana, tarde)
 
-headers = ['zona', 'accidentes', 'accidentes_alcance', 'accidentes_atropello',
-          'accidentes_salida', 'accidentes_tijera_camion', 'accidentes_vuelco', 
-            'accidentes_invierno', 'accidentes_primavera', 'accidentes_verano', 
-           'accidentes_otoño', 'trafico_fluido', 'trafico_lento', 'trafico_muy_lento', 
-          'trafico_parado','mañana(00:00-11:59)', 'tarde(12:00-23:59)']
+headers = ['zone', 'accidents', 'accidents_reach', 'outrage_accidents',
+          'road_exit_accidents', 'scissor_truck_accidents', 'rollover_accidents', 
+            'accidents_winter', 'accidents_spring', 'accidentes_summer', 
+           'accidentes_autumn', 'traffic_flow', 'traffic_slow', 'traffic_very_slow', 
+          'trafico_stopped','morning(00:00-11:59)', 'evening(12:00-23:59)']
 
 
 # <p style="font-family:courier;">4. We write de zones features in a new csv file called Zonas_dbscan</p>
 
-# In[7]:
+# In[14]:
 
-file_name_out = '../Data/Zonas_dbscan.csv'
+file_name_out = '../Data/Zones_dbscan.csv'
 
 with open(file_name_out, 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
