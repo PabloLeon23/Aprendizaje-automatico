@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[15]:
 
 
 
@@ -17,9 +17,9 @@ import numpy as np
 
 # <p style="font-family:courier;">1. Open the file with de zones and its features. We can select  Zonas_kmeans.csv or Zonas_dbscan.csv with the zones of differents clustering algorithms. We choose the results of DBScan due to the  results its graphic representation.</p>
 
-# In[2]:
+# In[16]:
 
-file_name = '../Data/Zonas_dbscan.csv'
+file_name = '../Data/Zones_dbscan.csv'
 
 f = open(file_name, 'r')
 csvfile = csv.reader(f)
@@ -32,7 +32,7 @@ for zona in csvfile:
 
 # <p style="font-family:courier;">2. Normalize the dataset</p>
 
-# In[3]:
+# In[17]:
 
 min_max_scaler = MinMaxScaler()
 zonas_norm = min_max_scaler.fit_transform([zona[1:] for zona in zonas])
@@ -40,19 +40,19 @@ zonas_norm = min_max_scaler.fit_transform([zona[1:] for zona in zonas])
 
 # <p style="font-family:courier;">3. Reduce the dimensionality of the data</p>
 
-# In[4]:
+# In[18]:
 
 pca_estimator = PCA(n_components = 2)
 X_pca = pca_estimator.fit_transform(zonas_norm)
 
-print 'Varianza explicada por cada varaible: ' + str(pca_estimator.explained_variance_ratio_)
-print 'Varianza total explicada: ' + str(sum(pca_estimator.explained_variance_ratio_))
+print 'Variance explained by each varaible: ' + str(pca_estimator.explained_variance_ratio_)
+print 'Total variance explained: ' + str(sum(pca_estimator.explained_variance_ratio_))
 
 
 # <p style="font-family:courier;">4. Plot the PCA</p>
 # <p style="font-family:courier;">4.1. Plot the raw results of the PCA</p>
 
-# In[5]:
+# In[19]:
 
 plt.scatter([x[0] for x in X_pca], [x[1] for x in X_pca])
 plt.show()
@@ -60,12 +60,12 @@ plt.show()
 
 # <p style="font-family:courier;">4.2. Plot of the results centered in the core of points</p>
 
-# In[6]:
+# In[20]:
 
 fig, ax = plt.subplots()
-plt.xlim(-0.2, 0.55)
-plt.ylim(-0.2, 1)
 ax.grid(True)
+plt.xlim(-1, 3.5)
+plt.ylim(-1, 1)
 
 N = len(X_pca)
 numbers = np.arange(len(X_pca))
@@ -77,9 +77,8 @@ plt.show()
 
 
 # <p style="font-family:courier;">5. Hierarchical clustering of the zones.</p>
-# <p style="font-family:courier;">5.1. Remove the zone 11 because it is a outlier and gets worse the dendogram</p>
 
-# In[7]:
+# In[21]:
 
 import sklearn.neighbors
 from scipy import cluster 
@@ -90,45 +89,45 @@ zonas = zonas[:11] + zonas[12:]
 X_pca = np.concatenate((X_pca[:11], X_pca[12:]))
 
 
-# <p style="font-family:courier;">5.2. Calculate the distance matrix with Euclidean distance</p>
+# <p style="font-family:courier;">5.1. Calculate the distance matrix with Euclidean distance</p>
 
-# In[8]:
+# In[22]:
 
 dist = sklearn.neighbors.DistanceMetric.get_metric('euclidean')
 matsim = dist.pairwise(X_pca)
 
-clusters = cluster.hierarchy.linkage(matsim, method = 'centroid')
+clusters = cluster.hierarchy.linkage(matsim, method = 'complete')
 
 
 # <p style="font-family:courier;">6. Plot the dendogram with a threshold of 1.3 for visualize the clusters</p>
 
-# In[9]:
+# In[23]:
 
-cluster.hierarchy.dendrogram(clusters, color_threshold=1.3)
+cut = 9
+cluster.hierarchy.dendrogram(clusters, color_threshold = cut)
 plt.show()
 
 
 # <p style="font-family:courier;">7. Cut the dendogram in the distance of 1.3</p>
 
-# In[10]:
+# In[24]:
 
-cut = 1.3
 labels = cluster.hierarchy.fcluster(clusters, cut, criterion='distance')
 unique_labels = set(labels)
-print 'Número de clusters %d' % (len(unique_labels) + 1)
+print 'Number of clusters %d' % len(unique_labels)
 
 
 # <p style="font-family:courier;">8. Plot the results of the hierarchical clustering over the PCA points.</p>
 
-# In[11]:
+# In[25]:
 
 colors = np.array(list('bgrcmykbgrcmykbgrcmykbgrcmyk'))
 colors = np.hstack([colors] * 20)
 
 fig, ax = plt.subplots()
 
-plt.xlim(-0.2, 0.55)
-plt.ylim(-0.2, 1)
+plt.xlim(-1, 3.5)
+plt.ylim(-1, 1)
 ax.grid(True)
 
 for i in range(len(zonas)):
@@ -140,7 +139,7 @@ plt.show()
 
 # <p style="font-family:courier;">9. Characterize the obtain groups with maximum, minimum and average of the zones features of each group.</p>
 
-# In[12]:
+# In[26]:
 
 zone_groups = dict()
 
@@ -149,7 +148,6 @@ for i, zona in enumerate(zonas):
         zone_groups[labels[i]].append(zona)
     else:
         zone_groups[labels[i]] = [zona]
-zone_groups[len(unique_labels)+1] = [zona_peligrosa]
 
 features = []
 
@@ -164,28 +162,26 @@ for key in zone_groups:
         zone_feature.append(mini)
         zone_feature.append(round(aver,2))
     features.append(zone_feature)
+features.sort()
 
 
 # <p style="font-family:courier;">10. Save the results in a csv file</p>
 # <p style="font-family:courier;">10.1. We define five different groups of zones</p>
 
-# In[13]:
+# In[29]:
 
-file_name_out = '../Data/Grupos_zonas.csv'
+file_name_out = '../Data/Groups_zones.csv'
 
-zonas_labels = ['Zona de peligro bajo',
-                'Zona de peligro medio',  
-                'Zona de peligro alto (Concentracion de accidentes de camiones)', 
-                'Zona de peligro bajo (Concentracion de accidentes de camiones)', 
-                'Zona de peligro alto',
-                'Zona de peligro muy alto']
+zonas_labels = ['Little dangerous zone',
+                'Moderately dangerous zone',  
+                'Dangerous zone']
 
 etiquetas = [' (max)', ' (min)', ' (average)']
 
 with open(file_name_out, 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
     
-    headers = ['Zona']
+    headers = ['Zone']
     for c in caracteristicas:
         for e in etiquetas:
             headers.append(c + e)
@@ -196,22 +192,26 @@ with open(file_name_out, 'w') as csvfile:
     writer.writerows(features)
 
 
-# In[14]:
+# In[30]:
 
-file_name_out_2 = '../Data/Zonas_labels.csv'
+file_name_out_2 = '../Data/Zones_labels.csv'
 
-headers = ['zona', 'accidentes', 'accidentes_alcance', 'accidentes_atropello',
-          'accidentes_salida', 'accidentes_tijera_camion', 'accidentes_vuelco', 
-            'accidentes_invierno', 'accidentes_primavera', 'accidentes_verano', 
-           'accidentes_otoño', 'trafico_fluido', 'trafico_lento', 'trafico_muy_lento', 
-          'trafico_parado','mañana(00:00-11:59)', 'tarde(12:00-23:59)', 'grupo']
+headers = ['zone', 'accidents', 'accidents_reach', 'outrage_accidents',
+          'road_exit_accidents', 'scissor_truck_accidents', 'rollover_accidents', 
+            'accidents_winter', 'accidents_spring', 'accidentes_summer', 
+           'accidentes_autumn', 'traffic_flow', 'traffic_slow', 'traffic_very_slow', 
+          'trafico_stopped','morning(00:00-11:59)', 'evening(12:00-23:59)', 'group']
 
 for i in range(len(zonas)):
     zonas[i].append(labels[i])
-zonas.append(zona_peligrosa + [6])
 
 with open(file_name_out_2, 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter = ',')
     writer.writerow(headers)
     writer.writerows(zonas)
+
+
+# In[ ]:
+
+
 
