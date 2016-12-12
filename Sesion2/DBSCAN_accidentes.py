@@ -8,8 +8,9 @@
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
+get_ipython().magic(u'matplotlib inline')
 
-f = open('../Data/Accidents.csv', 'r')
+f = open('../Data/Accidents2.csv', 'r')
 cs = csv.reader(f)
 cs.next()
 
@@ -32,7 +33,7 @@ X = np.asarray(data)
 fig, ax = plt.subplots()
 plt.scatter(X[:,0], X[:,1], c='r', marker='o')
 ax.grid(True)
-plt.title('Accidentes en Bizkaia')
+plt.title('Accidents in Bizkaia')
 plt.show()
 
 
@@ -69,12 +70,12 @@ db = DBSCAN(eps=0.0095, min_samples=10).fit(X)
 unique_labels = set(db.labels_)
 n_clusters = len(unique_labels) - (1 if -1 in unique_labels else 0)
 
-print 'Número de clusters: ', n_clusters
+print 'Number of clusters: ', n_clusters
 
 
 # <p style="font-family:courier;">5. We show the silhoutte coefficient</p>
 
-# In[5]:
+# In[ ]:
 
 # Validation/Evaluation
 from sklearn import metrics
@@ -83,7 +84,7 @@ print "Silhoutte Coefficient: %0.3f" % metrics.silhouette_score(X, db.labels_)
 
 # <p style="font-family:courier;">6. Plot the clusters</p>
 
-# In[6]:
+# In[ ]:
 
 colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
 for k, col in zip(unique_labels, colors):
@@ -97,7 +98,7 @@ plt.show()
 
 # <p style="font-family:courier;">7. We write new data in a csv file called Accidents_zones_dbscan</p>
 
-# In[7]:
+# In[ ]:
 
 headers = ['causa', 'poblacion','fecha', 'hora', 'nivel', 'carretera', 
            'pk_inicial', 'pk_final', 'sentido', 'longitud', 'latitud',
