@@ -42,6 +42,23 @@ Machine Learning class work:
 	Input: Data/Works.csv <br/>
 	Output: Works_zones.csv<br/>
 
+10. We predict the cluster group of each zone with a decision tree and extract the feature relevance. Because the implementation of decision trees has a random factor, we use Random Forest several times in order to improve the acuraccy of the feature relevance.
+	Script: Sesion6/DecisionTree.py <br/>
+	Script: Sesion6/RandomForest.py<br/>
+	Input: Data/Zones_labels.csv <br/>
+
+11. Next, we filter the works in 2007 for remove the repeated works.
+	Script: Sesion7/FilterWorks.py<br/>
+	Input: Data/Works2007.csv<br/>
+	Output: Data/Works2007_filtered.csv<br/>
+	
+
+12. Next, we use the zones and the works of 2007 for create a prediction model with Decision Tree algorithm for predict the number of works in each zone.
+	Script: Sesion7/WorksPrediction.py<br/>
+	Input: /Data/Works2007_filtered.csv<br/>
+	Output: /Data/Zones_with_number_works.csv, /Data/Zones_with_discrete_works.csv<br/>
+	
+
  
 
 * Each Script hava a Jupyter Notebook with comments.
