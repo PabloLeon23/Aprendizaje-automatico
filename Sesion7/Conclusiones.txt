@@ -1,0 +1,6 @@
+There are "few" workroads in those zones with small number of exit and rollover accidents.
+There are "normal" workroads in those zones with more exit accidents and rollover accidents.
+If there are more rollover accidents, then there are "many" workroads in that zone.
+
+We can conclude that the criterion of Euskadi government for do workroads is not random and they use, apparently, the number of accidents due to exit or rollover to decide in what zones do workroads.
+
